@@ -6,6 +6,6 @@
 ## 🤹‍♀️ 기술 스택  
 ![stack](https://github.com/DHkimgit/AlgoLog/assets/96455522/d2d27c5e-0693-46ef-978b-988df0e53301)
 * **프론트 엔드**: 리엑트, 리코일(전역상태 관리), styled-component(css), Ant Design(css)
-* **벡엔드**: Fastapi, pydantic(data schema), motor(mongodb), beautifulsoup(크롤링)
+* **벡엔드**: Fastapi, pydantic(data schema), motor(mongodb Asynchronous Driver for python), beautifulsoup(크롤링)
 * **데이터베이스**: MongoDB
 * **개발환경**: Win 11 & wsl2(Ubuntu 22.04.3) & Docker Descktop(프론트엔드, 백엔드, DB 독립적인 컨테이너로 구성함) & vscode 
