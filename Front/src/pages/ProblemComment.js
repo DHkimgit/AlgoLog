@@ -16,7 +16,7 @@ const Maincontainer = styled.div`
     display: flex;
 `
 
-const QandA = () => {
+const ProblemComment = () => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenAtom);
   const [userName, setUserName] = useRecoilState(userNameAtom);
   const [userEmail, setUserEmail] = useRecoilState(userEmailAtom);
@@ -72,42 +72,9 @@ const QandA = () => {
       <TopNav></TopNav>
       <Maincontainer>
         <SideBar menu={'Q & A'}/>
-        <Problem id={id} />
+        <Problem id = {id} />
       </Maincontainer>
     </>
   );
 };
-export default QandA;
-
-const problemData1 = {
-  "problem": {
-    "_id": "65f5d19f263d6291ec1e95f9",
-    "problemid": 1000,
-    "title": "1000번: A+B",
-    "percentage": "39.278%",
-    "tiers": "Bronze V",
-    "tags": [
-      "구현",
-      "사칙연산",
-      "수학"
-    ]
-  },
-  "comments": [
-    {
-      "_id": "65f86a3a3357985cec867923",
-      "problemid": "65f5d19f263d6291ec1e95f9",
-      "userid": "65f5d1ca263d6291ec1e964d",
-      "comment": "간단한 더하기 문제라서 쉬워용",
-      "up": 0,
-      "down": 0
-    },
-    {
-      "_id": "664d9bb59ff433183ff26a05",
-      "problemid": "65f5d19f263d6291ec1e95f9",
-      "userid": "664d96373bf6992fbb1d5d3b",
-      "comment": "눈감고도 품 ㄹㅇ",
-      "up": 0,
-      "down": 0
-    }
-  ]
-};
+export default ProblemComment;
