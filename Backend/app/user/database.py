@@ -69,7 +69,7 @@ async def retrieve_users_forgrid():
     return result
 
 # Retrieve a student with a matching ID
-async def retrieve_user(userid: str) -> dict:
+async def retrieve_user(id: str) -> dict:
     user = await user_collection.find_one({"_id": ObjectId(id)})
     if user:
         return user_helper(user)
@@ -142,7 +142,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     user = await retrieve_user_userid_nohelper(userid)
     if user is None:
         raise credentials_exception 
-    result = {'name': user['name'], 'userid': user['userid'], 'bojid': user['bojid'], 'email': user['email'], 'admin': user['admin']}
+    result = {'_id': str(user['_id']), 'name': user['name'], 'userid': user['userid'], 'bojid': user['bojid'], 'email': user['email'], 'admin': user['admin']}
     print(result)
     return result
 

@@ -87,6 +87,7 @@ async def retrive_tag_data(tagname:str):
 async def retrive_problem_data(problemid: int):
     problem = await problem_collection.find_one({"problemid": problemid})
     response_data = {
+        "_id": str(problem["_id"]),
         "problemid": problem["problemid"],
         "title": problem["title"],
         "percentage": problem["percentage"],

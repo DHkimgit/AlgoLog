@@ -98,7 +98,7 @@ async def get_users():
         return users
     return ResponseModel(users, "Empty list returned")
 
-@router.get("/{id}", response_description="User data retrieved")
+@router.get("/oid/{id}", response_description="User data retrieved")
 async def get_user_data(id):
     user = await retrieve_user(id)
     if user:
