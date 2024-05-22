@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.user.routes import router as UserRouter
 from app.crawl.routes import router as CrawlRouter
 from app.login.routes import router as LoginRouter
+from app.comment.routes import router as CommentRouter
 
 app = FastAPI()
 
@@ -28,6 +29,7 @@ app.add_middleware(
 app.include_router(UserRouter, tags=["User"], prefix="/user")
 app.include_router(CrawlRouter, tags=["Crawl"], prefix="/crawl")
 app.include_router(LoginRouter, tags=["Login"], prefix="/login")
+app.include_router(CommentRouter, tags=["Comment"], prefix="/comment")
 
 @app.get("/", tags=["Root"])
 async def read_root():
