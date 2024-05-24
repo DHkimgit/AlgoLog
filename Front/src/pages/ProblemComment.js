@@ -16,7 +16,7 @@ const Maincontainer = styled.div`
     display: flex;
 `
 
-const ProblemComment = () => {
+const ProblemComment = ({problemid}) => {
   const [accessToken, setAccessToken] = useRecoilState(accessTokenAtom);
   const [userName, setUserName] = useRecoilState(userNameAtom);
   const [userEmail, setUserEmail] = useRecoilState(userEmailAtom);
@@ -47,20 +47,6 @@ const ProblemComment = () => {
     }
 })
 
-//   useEffect(() => {
-//     console.log(id)
-//     if (accessToken) {
-//       axios.get(`http://localhost:8000/comment/page/${id}`)
-//       .then(result => {
-//         console.log(result.data);
-//         setProblemData(result.data);
-//       }).catch(error => {
-//         console.error(error);
-//       });
-//   }
-// }, [accessToken, id])
-
-
   function Click_Debug(){
       console.log(userName)
       console.log(userEmail)
@@ -69,10 +55,8 @@ const ProblemComment = () => {
 
   return (
     <>
-      <TopNav></TopNav>
       <Maincontainer>
-        <SideBar menu={'Q & A'}/>
-        <Problem id = {id} />
+        <Problem id = {problemid} />
       </Maincontainer>
     </>
   );

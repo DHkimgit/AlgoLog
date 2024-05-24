@@ -9,6 +9,7 @@ import userEmailAtom from '../recoil/email';
 import TopNav from '../components/TopNav';
 import SideBar from '../components/SideBar';
 import bojIdAtom from '../recoil/bojid';
+import FailedProblemTable from '../components/FailedProblemTable';
 
 const Maincontainer = styled.div`
     display: flex;
@@ -55,8 +56,7 @@ const Wrong = () => {
       <TopNav></TopNav>
       <Maincontainer>
         <SideBar menu={'틀린 문제'}/>
-        <div>{userName}</div>
-        <button onClick={Click_Debug}>확인</button>
+        <FailedProblemTable/>
       </Maincontainer>
     </>
   );
