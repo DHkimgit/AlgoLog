@@ -9,7 +9,8 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 from app.comment.database import (
     add_comment,
     get_comment,
-    get_comment_page_data
+    get_comment_page_data,
+    delete_comment
 )
 
 from app.user.models import (
@@ -20,6 +21,8 @@ from app.user.models import (
 
 from app.comment.models import (
     CommentAddSchema,
+    ResponseModel,
+    ErrorResponseModel
 )
 
 from app.user.database import (
@@ -70,3 +73,15 @@ async def get_comment_data(problem_id:int):
     print(problemid)
     result = await get_comment_page_data(problemid)
     return result
+
+@router.delete("/{id}", response_description="Comment data deleted from the database")
+async def delete_user_data(id: str):
+    deleted_comment = await delete_comment(id)
+    if deleted_comment:
+        return ResponseModel(
+            "Comment with ID: {} removed".format(id), "Comment deleted successfully"
+        )
+    else:
+        return ErrorResponseModel(
+        "An error occurred", 404, "Comment with id {0} doesn't exist".format(id)
+        )

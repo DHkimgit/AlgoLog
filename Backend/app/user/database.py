@@ -172,3 +172,24 @@ async def get_current_user_bojdata(token: str = Depends(oauth2_scheme)):
     result = user['bojproblem']
 
     return result
+
+async def get_current_user_failed_problem(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[ALGORITHM])
+        userid: str = payload.get("sub")
+        if userid is None:
+            raise credentials_exception
+        token_data = TokenData(username=userid)
+    except JWTError:
+        raise credentials_exception
+    user = await retrieve_user_userid_nohelper(userid)
+    if user is None:
+        raise credentials_exception 
+    result = user['boj_failed_problem']
+
+    return result

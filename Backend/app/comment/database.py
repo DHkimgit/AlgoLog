@@ -32,6 +32,16 @@ async def comment_helper(user) -> dict:
     print("sdsd")
     print(user["userid"])
     user_name = await user_collection.find_one({"_id": ObjectId(user["userid"])})
+    if user_name == None:
+        return {
+            "_id": str(user["_id"]),
+            "problemid": user["problemid"],
+            "userid": user["userid"],
+            "username": "탈퇴한 사용자",
+            "comment": user["comment"],
+            "up": user["up"],
+            "down": user["down"]
+        }
     print(user_name)
     return {
         "_id": str(user["_id"]),
@@ -46,7 +56,7 @@ async def comment_helper(user) -> dict:
 async def add_comment(comment_data: dict) -> dict:
     comment = await comment_collection.insert_one(comment_data)
     new_comment = await comment_collection.find_one({"_id": comment.inserted_id})
-    return comment_helper(new_comment)
+    return await comment_helper(new_comment)
 
 async def get_comment(comment_id: str):
     comments = []
@@ -55,6 +65,13 @@ async def get_comment(comment_id: str):
         comments.append(comment_helper(comment))
     print(comments)
     return comments
+
+# Delete a comment from the database
+async def delete_comment(id: str):
+    comment = await comment_collection.find_one({"_id": ObjectId(id)})
+    if comment:
+        await comment_collection.delete_one({"_id": ObjectId(id)})
+        return True
 
 async def get_comment_page_data(problem_id: str) -> dict:
 
