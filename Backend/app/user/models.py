@@ -48,6 +48,7 @@ class UserResponseSchema(BaseModel):
     email: EmailStr = Field(...)
     admin: bool = Field(...)
     bojproblem: List[int] = Field(...)
+    boj_failed_problem: List[int] = Field(...)
     
     class config():
         schema_extra = {

@@ -17,7 +17,8 @@ from app.user.database import (
     retrieve_user_nohelper,
     get_current_active_user,
     get_current_user,
-    get_current_user_bojdata
+    get_current_user_bojdata,
+    get_current_user_failed_problem
 )
 from app.user.models import (
     ErrorResponseModel,
@@ -40,7 +41,7 @@ from app.crawl.database import(
     retrive_problem_data
 )
 
-from app.crawl.logic import crawl_solved_problem_number
+from app.crawl.logic import (crawl_solved_problem_number, crawl_failed_problem_number)
 
 router = APIRouter()
 
@@ -65,9 +66,17 @@ async def add_student_data(user: UserSchema = Body(...)):
     # 데이터베이스에 저장될 유저 데이터에 사용자가 푼 문제 리스트를 추가
     users["bojproblem"] = user_boj_solved_problem
 
+    user_boj_failed_problem = await crawl_failed_problem_number(users["bojid"])
+
+    # 데이터베이스에 저장될 유저 데이터에 사용자가 틀린 문제 리스트를 추가
+    users["boj_failed_problem"] = user_boj_failed_problem
+
     # 데이터베이스에 사용자가 푼 문제들의 정보를 저장(시간 소요)
     for i in range(len(user_boj_solved_problem)):
         k = await add_problem_data(user_boj_solved_problem[i])
+    
+    for i in range(len(user_boj_failed_problem)):
+        k = await add_problem_data(user_boj_failed_problem[i])
 
     # 데이터베이스 유저 테이블에 사용자의 데이터 추가
     new_user = await add_user(users)
@@ -90,6 +99,18 @@ async def get_user_problems(current_user_bojdata: UserResponseSchema = Depends(g
         result_lists.append(problem_data)
     
     return result_lists
+
+# 사용자가 BOJ에서 틀린 문제들을 반환합니다
+@router.get("/problems/failed")
+async def get_user_problems(current_user_bojdata: UserResponseSchema = Depends(get_current_user_failed_problem)):
+    print(current_user_bojdata)
+    result_lists = []
+    for i in range(len(current_user_bojdata)):
+        problem_data = await retrive_problem_data(current_user_bojdata[i])
+        result_lists.append(problem_data)
+    
+    return result_lists
+
 
 @router.get("/grid", response_description="Users retrieved_helpme")
 async def get_users():

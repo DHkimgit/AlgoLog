@@ -3,7 +3,7 @@ from fastapi import APIRouter
 import requests
 from bs4 import BeautifulSoup
 import json
-from app.crawl.logic import crawl_solved_problem_number
+from app.crawl.logic import (crawl_solved_problem_number, crawl_failed_problem_number)
 from app.crawl.database import(
     add_problem_data,
     add_tag_data,
@@ -72,13 +72,13 @@ async def crawl_website(number: int):
 @router.get("/problemlist")
 async def crawl_problem_list(bojid: str):
     k = crawl_solved_problem_number(bojid)
-    print(k)
+    #print(k)
     return k
 
 @router.post("/problemlist")
 async def add_crawled_problem_list(bojid: str):
-    user_solved_problem_list = crawl_solved_problem_number(bojid)
-
+    user_solved_problem_list = await crawl_solved_problem_number(bojid)
+    user_failed_problem_list = await crawl_failed_problem_number(bojid)
     for i in range(len(user_solved_problem_list)):
         k = await add_problem_data(user_solved_problem_list[i])
     

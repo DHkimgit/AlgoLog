@@ -70,3 +70,17 @@ async def crawl_solved_problem_number(id: str):
         if match:
             numbers.append(int(match.group()))
     return numbers
+
+async def crawl_failed_problem_number(id: str):
+    headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+        }
+    response = requests.get(f"https://www.acmicpc.net/user/{id}", headers=headers)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    find_problem_list = soup.find_all('div', {'class': 'problem-list'})
+    #print(find_problem_list)
+    problem_list = soup.find('h3', text='시도했지만 맞지 못한 문제').find_parent('div').find_parent('div').find_all('a')
+    print(problem_list)
+    problem_ids = [int(a.text) for a in problem_list]
+    print(problem_ids)
+    return problem_ids
