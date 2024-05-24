@@ -6,7 +6,7 @@ import { Space, Table, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import ProblemCommentModal from './ProblemCommentModal';
   
-const ProblemTable = () => {
+const FailedProblemTable = () => {
     const [accessToken, setAccessToken] = useRecoilState(accessTokenAtom);
     const [dataSource, setDataSource] = useState();
     const [bottom, setBottom] = useState('bottomCenter');
@@ -111,7 +111,7 @@ const ProblemTable = () => {
     
     useEffect(() => {
         if (accessToken) {
-            axios.get("http://localhost:8000/user/problems", {
+            axios.get("http://localhost:8000/user/problems/failed", {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }
@@ -137,4 +137,4 @@ const ProblemTable = () => {
 
 }
 
-export default ProblemTable;
+export default FailedProblemTable;

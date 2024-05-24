@@ -91,6 +91,18 @@ const CommentButton = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  float: right;
+`;
+
+const CommentDeleteButton = styled.button`
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+  margin-bottom: 5px;
 `;
 
 var stringify = require('qs-stringify');
@@ -157,6 +169,26 @@ const Problem = ({ id }) => {
     }
   };
 
+  // const handleDeleteComment = async (_id) => {
+  //   try {
+  //       console.log(params);
+  //     const response = await axios.delete(
+  //       `http://localhost:8000/comment/${_id}`);
+  //     if (response.status === 200) {
+  //       setNewComment(''); // 입력 필드 초기화
+  //       // comments 상태를 업데이트하여 컴포넌트 리렌더링 트리거
+  //       const token = localStorage.getItem('user');
+  //       const token_request = JSON.parse(token);
+  //       if (token_request) {
+  //           setAccessToken(token_request.accessToken);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('댓글 삭제 오류:', error);
+  //     // 오류 처리 로직 추가 (예: 사용자에게 오류 메시지 표시)
+  //   }
+  // };
+
   return (
     <ProblemContainer>
         {isLoading ? (
@@ -177,7 +209,10 @@ const Problem = ({ id }) => {
         {problemData.comments.map((comment) => (
           <Comment key={comment._id}>
             <CommentUser>{comment.username}</CommentUser>
-            <CommentContent>{comment.comment}</CommentContent>
+            <CommentContent>
+              {comment.comment}
+            </CommentContent>
+            
           </Comment>
         ))}
         

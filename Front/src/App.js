@@ -14,13 +14,15 @@ import ProblemComment from './pages/ProblemComment';
 
 import { useRecoilValue } from 'recoil';
 import loginStateAtom from './recoil/login';
+import LoginRedirect from './components/LoginRedirect';
 
 function App() {
-  const loginState = useRecoilValue(loginStateAtom);
+
+
   return (
     <RecoilRoot>
       <Routes>
-        <Route path="/" element={loginState ? <Navigate to="/main" /> : <Navigate to="/login" />} />
+        <Route path="/" element={<LoginRedirect/>} />
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/register" element={<Register/>}></Route>
         <Route path="/main" element={<Main/>}></Route>
