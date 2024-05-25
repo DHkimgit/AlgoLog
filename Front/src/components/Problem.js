@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { accessTokenAtom } from '../recoil/token'; // accessTokenAtom import
+import { accessTokenAtom } from '../recoil/token';
 import { useRecoilState } from 'recoil';
-import ProblemStateAtom from '../recoil/problem';
 import axios from 'axios';
 
 const ProblemContainer = styled.div`
@@ -155,39 +154,39 @@ const Problem = ({ id }) => {
       // 댓글 작성 성공 시, 컴포넌트 리렌더링을 위해 comments 상태 업데이트
       // (더 효율적인 방법은 백엔드에서 새로운 댓글 데이터를 반환받아 comments 배열에 추가하는 것입니다.)
       if (response.status === 200) {
-        setNewComment(''); // 입력 필드 초기화
-        // comments 상태를 업데이트하여 컴포넌트 리렌더링 트리거
-        const token = localStorage.getItem('user');
-        const token_request = JSON.parse(token);
-        if (token_request) {
-            setAccessToken(token_request.accessToken);
+        setIsLoading(true);
+        axios.get(`http://localhost:8000/comment/page/${id}`)
+        .then(result => {
+            setProblemData(result.data);
         }
+        ).finally(() => {
+            setIsLoading(false);
+            setNewComment('');
+        })
       }
     } catch (error) {
       console.error('댓글 작성 오류:', error);
-      // 오류 처리 로직 추가 (예: 사용자에게 오류 메시지 표시)
     }
   };
 
-  // const handleDeleteComment = async (_id) => {
-  //   try {
-  //       console.log(params);
-  //     const response = await axios.delete(
-  //       `http://localhost:8000/comment/${_id}`);
-  //     if (response.status === 200) {
-  //       setNewComment(''); // 입력 필드 초기화
-  //       // comments 상태를 업데이트하여 컴포넌트 리렌더링 트리거
-  //       const token = localStorage.getItem('user');
-  //       const token_request = JSON.parse(token);
-  //       if (token_request) {
-  //           setAccessToken(token_request.accessToken);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error('댓글 삭제 오류:', error);
-  //     // 오류 처리 로직 추가 (예: 사용자에게 오류 메시지 표시)
-  //   }
-  // };
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/comment/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        const updatedComments = problemData.comments.filter(comment => comment._id !== commentId);
+        setProblemData({ ...problemData, comments: updatedComments });
+      }
+    } catch (error) {
+      console.error('댓글 삭제 오류:', error);
+    }
+  };
 
   return (
     <ProblemContainer>
@@ -209,8 +208,12 @@ const Problem = ({ id }) => {
         {problemData.comments.map((comment) => (
           <Comment key={comment._id}>
             <CommentUser>{comment.username}</CommentUser>
+            <CommentDeleteButton onClick={() => handleDeleteComment(comment._id)}>
+              삭제
+            </CommentDeleteButton>
             <CommentContent>
               {comment.comment}
+              
             </CommentContent>
             
           </Comment>
